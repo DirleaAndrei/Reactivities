@@ -14,6 +14,7 @@ export default function ActivityDashboard({
   closeForm,
   createOrEdit,
   deleteActivity,
+  submitting,
 }) {
   return (
     <Grid>
@@ -22,6 +23,7 @@ export default function ActivityDashboard({
           activities={activities}
           selectActivity={selectActivity}
           deleteActivity={deleteActivity}
+          submitting={submitting}
         />
       </Grid.Column>
       <Grid.Column width="6">
@@ -37,6 +39,7 @@ export default function ActivityDashboard({
             closeForm={closeForm}
             selectedActivity={selectedActivity}
             createOrEdit={createOrEdit}
+            submitting={submitting}
           />
         )}
       </Grid.Column>

@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
 
 export default function ActivityList({
   activities,
   selectActivity,
   deleteActivity,
+  submitting,
 }) {
+  const [target, setTarget] = useState("");
+
+  function handleActiveDelete(e, id) {
+    setTarget(e.target.name);
+    deleteActivity(id);
+  }
+
   return (
     <Segment>
       <Item.Group divided>
@@ -29,7 +37,9 @@ export default function ActivityList({
                     color="blue"
                   />
                   <Button
-                    onClick={() => deleteActivity(activity.id)}
+                    name={activity.id}
+                    loading={submitting && target === activity.id}
+                    onClick={(e) => handleActiveDelete(e, activity.id)}
                     floated="right"
                     content="Delete"
                     color="red"

@@ -5,6 +5,7 @@ export default function ActivityForm({
   selectedActivity,
   closeForm,
   createOrEdit,
+  submitting,
 }) {
   const initialState = selectedActivity ?? {
     id: "",
@@ -49,6 +50,7 @@ export default function ActivityForm({
           onChange={handleInputChange}
         />
         <Form.Input
+          type="date"
           placeholder="Date"
           value={activity.date}
           name="date"
@@ -66,7 +68,13 @@ export default function ActivityForm({
           name="venue"
           onChange={handleInputChange}
         />
-        <Button floated="right" positive type="submit" content="Submit" />
+        <Button
+          loading={submitting}
+          floated="right"
+          positive
+          type="submit"
+          content="Submit"
+        />
         <Button
           onClick={closeForm}
           floated="right"
