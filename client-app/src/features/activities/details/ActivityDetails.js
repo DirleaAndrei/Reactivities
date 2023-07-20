@@ -1,31 +1,32 @@
 import React from "react";
 import { Button, Card, Image } from "semantic-ui-react";
+import { useStore } from "../../../app/stores/store";
+import { observer } from "mobx-react-lite";
 
-export default function ActivityDetails({
-  activity,
-  cancelSelectActivity,
-  openForm,
-}) {
+export default observer(function ActivityDetails() {
+  const { activityStore } = useStore();
+  const { selectedActivity, openForm, cancelSelectedActivity } = activityStore;
+
   return (
     <Card fluid>
-      <Image src={`/assets/categoryImages/${activity.category}.jpg`} />
+      <Image src={`/assets/categoryImages/${selectedActivity.category}.jpg`} />
       <Card.Content>
-        <Card.Header>{activity.title}</Card.Header>
+        <Card.Header>{selectedActivity.title}</Card.Header>
         <Card.Meta>
-          <span>{activity.date}</span>
+          <span>{selectedActivity.date}</span>
         </Card.Meta>
-        <Card.Description>{activity.description}</Card.Description>
+        <Card.Description>{selectedActivity.description}</Card.Description>
       </Card.Content>
       <Card.Content extra>
         <Button.Group extra="true">
           <Button
-            onClick={() => openForm(activity.id)}
+            onClick={() => openForm(selectedActivity.id)}
             basic
             color="blue"
             content="Edit"
           />
           <Button
-            onClick={cancelSelectActivity}
+            onClick={cancelSelectedActivity}
             basic
             color="grey"
             content="Cancel"
@@ -34,4 +35,4 @@ export default function ActivityDetails({
       </Card.Content>
     </Card>
   );
-}
+})
