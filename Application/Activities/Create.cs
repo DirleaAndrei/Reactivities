@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using Domain;
 using MediatR;
 using Persistence;
+using FluentValidation;
 
-namespace Application
+namespace Application.Activities
 {
     public class Create
     {
@@ -14,6 +15,15 @@ namespace Application
         {
             public Activity Activity { get; set; }
         }
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Activity).SetValidator(new ActivityValidator());
+            }
+        }
+
 
         public class Handler : IRequestHandler<Command>
         {
