@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Persistence;
 using FluentValidation.AspNetCore;
 using FluentValidation;
-using Application;
 
 namespace API.Extensions
 {
