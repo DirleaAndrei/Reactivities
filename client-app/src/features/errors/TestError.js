@@ -41,7 +41,7 @@ export default function TestErrors() {
     axios.post(baseUrl + "activities", {}).catch((err) => setErrors(err));
   }
 
-  return (
+  return ( 
     <>
       <Header as="h1" content="Test Error component" />
       <Segment>
