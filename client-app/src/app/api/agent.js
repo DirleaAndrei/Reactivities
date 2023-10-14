@@ -11,6 +11,12 @@ const sleep = (delay) => {
 
 axios.defaults.baseURL = "http://localhost:5002/api";
 
+axios.interceptors.request.use((config) => {
+  const token = store.commonStore.token;
+  if (token && config.headers) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
 axios.interceptors.response.use(
   async (response) => {
     await sleep(1000);
@@ -57,7 +63,7 @@ axios.interceptors.response.use(
 
 const responseBody = (response) => response.data;
 
-const request = {
+const requests = {
   get: (url) => axios.get(url).then(responseBody),
   post: (url, body) => axios.post(url, body).then(responseBody),
   put: (url, body) => axios.put(url, body).then(responseBody),
@@ -65,15 +71,22 @@ const request = {
 };
 
 const Activities = {
-  list: () => request.get("/activities"),
-  details: (id) => request.get(`/activities/${id}`),
-  create: (activity) => request.post(`/activities`, activity),
-  update: (activity) => request.put(`/activities/${activity.id}`, activity),
-  delete: (id) => request.del(`/activities/${id}`),
+  list: () => requests.get("/activities"),
+  details: (id) => requests.get(`/activities/${id}`),
+  create: (activity) => requests.post(`/activities`, activity),
+  update: (activity) => requests.put(`/activities/${activity.id}`, activity),
+  delete: (id) => requests.del(`/activities/${id}`),
+};
+
+const Account = {
+  current: () => requests.get("/account"),
+  login: (user) => requests.post("/account/login", user),
+  register: (user) => requests.post("/account/register", user),
 };
 
 const agent = {
   Activities,
+  Account,
 };
 
 export default agent;

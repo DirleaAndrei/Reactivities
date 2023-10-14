@@ -1,6 +1,6 @@
 import { Message } from "semantic-ui-react";
 
-export default function ValidationError({ errors }) {
+export default function ValidationErrors({ errors }) {
   return (
     <Message error>
       {errors && (

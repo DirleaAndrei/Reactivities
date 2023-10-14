@@ -1,7 +1,7 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Button, Header, Segment } from "semantic-ui-react";
-import axios from "axios";
-import ValidationError from "./ValidationError";
+import ValidationError from "./ValidationErrors";
 
 export default function TestErrors() {
   const baseUrl = "http://localhost:5002/api/";
@@ -32,16 +32,14 @@ export default function TestErrors() {
   }
 
   function handleBadGuid() {
-    axios
-      .get(baseUrl + "activities/notaguid")
-      .catch((err) => console.log(err));
+    axios.get(baseUrl + "activities/notaguid").catch((err) => console.log(err));
   }
 
   function handleValidationError() {
     axios.post(baseUrl + "activities", {}).catch((err) => setErrors(err));
   }
 
-  return ( 
+  return (
     <>
       <Header as="h1" content="Test Error component" />
       <Segment>
