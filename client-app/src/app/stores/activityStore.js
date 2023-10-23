@@ -1,8 +1,9 @@
 import { format } from "date-fns";
 import { makeAutoObservable, runInAction } from "mobx";
-import { v4 as uuid } from "uuid";
 import agent from "../api/agent";
 import { store } from "./store";
+import { Activity } from "../../features/models/activity";
+import { Profile } from "../../features/models/profile";
 
 export default class ActivityStore {
   activityRegistry = new Map();
@@ -93,39 +94,38 @@ export default class ActivityStore {
   };
 
   createActivity = async (activity) => {
-    this.loading = true;
-    activity.id = uuid();
+    const user = store.userStore.user;
+    const attendee = new Profile(user);
+
     try {
       await agent.Activities.create(activity);
+      const newActivity = new Activity(activity);
+      newActivity.hostUsername = user.username;
+      newActivity.attendees = [attendee];
+      this.setActivity(newActivity);
       runInAction(() => {
-        this.activityRegistry.set(activity.id, activity);
-        this.selectedActivity = activity;
-        this.editMode = false;
-        this.loading = false;
+        this.selectedActivity = newActivity;
       });
     } catch (error) {
       console.log(error);
-      runInAction(() => {
-        this.loading = false;
-      });
     }
   };
 
   updateActivity = async (activity) => {
-    this.loading = true;
     try {
       await agent.Activities.update(activity);
       runInAction(() => {
-        this.activityRegistry.set(activity.id, activity);
-        this.selectActivity = activity;
-        this.loading = false;
-        this.editMode = false;
+        if (activity.id) {
+          const updatedActivity = {
+            ...this.getActivity(activity.id),
+            ...activity,
+          };
+          this.activityRegistry.set(activity.id, updatedActivity);
+          this.selectActivity = updatedActivity;
+        }
       });
     } catch (error) {
       console.log(error);
-      runInAction(() => {
-        this.loading = false;
-      });
     }
   };
 
@@ -150,8 +150,7 @@ export default class ActivityStore {
 
     this.loading = true;
     try {
-      debugger
-      await agent.Activities.attend(this.selectedActivity.Id);
+      await agent.Activities.attend(this.selectedActivity.id);
       runInAction(() => {
         if (this.selectedActivity?.isGoing) {
           this.selectedActivity.attendees =
@@ -174,4 +173,19 @@ export default class ActivityStore {
       runInAction(() => (this.loading = false));
     }
   };
+
+  cancelActivityToggle = async () => {
+    this.loading = true;
+    try {
+      await agent.Activities.attend(this.selectedActivity.id)
+      runInAction(()=> {
+        this.selectedActivity.isCancelled = !this.selectedActivity?.isCancelled;
+        this.activityRegistry.set(this.selectedActivity.id, this.selectedActivity)
+      })
+    } catch (error) {
+      console.log(error)
+    }finally {
+      runInAction(()=>{this.loading=false})
+    }
+  }
 }
