@@ -1,4 +1,8 @@
 {
   "dotnet.defaultSolution": "Reactivities.sln",
-  "cSpell.words": ["Formik"]
+  "cSpell.words": [
+    "Cloudinary",
+    "Formik",
+    "Mediat"
+  ]
 }
