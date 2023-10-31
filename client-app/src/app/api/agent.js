@@ -76,7 +76,7 @@ const Activities = {
   create: (activity) => requests.post(`/activities`, activity),
   update: (activity) => requests.put(`/activities/${activity.id}`, activity),
   delete: (id) => requests.del(`/activities/${id}`),
-  attend: (id) => requests.post(`/activities/${id}/attend`, {})
+  attend: (id) => requests.post(`/activities/${id}/attend`, {}),
 };
 
 const Account = {
@@ -85,9 +85,14 @@ const Account = {
   register: (user) => requests.post("/account/register", user),
 };
 
+const Profiles = {
+  get: (username) => requests.get(`/profiles/${username}`),
+};
+
 const agent = {
   Activities,
   Account,
+  Profiles,
 };
 
 export default agent;

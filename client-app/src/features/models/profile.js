@@ -3,6 +3,7 @@ export class Profile {
   displayName = "";
   bio = null;
   image = "";
+  photos = [];
 
   constructor(user) {
     if (user) {
@@ -10,6 +11,7 @@ export class Profile {
       this.displayName = user.displayName;
       this.bio = null;
       this.image = user.image;
+      this.photos = user.photos;
     }
   }
 }
