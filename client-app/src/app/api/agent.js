@@ -87,6 +87,15 @@ const Account = {
 
 const Profiles = {
   get: (username) => requests.get(`/profiles/${username}`),
+  uploadPhoto: (file) => {
+    let formData = new FormData();
+    formData.append("File", file);
+    return axios.post("photos", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+  setMainPhoto: (id) => requests.post(`/photos/${id}/setMain`, {}),
+  deletePhoto: (id) => requests.del(`/photos/${id}`),
 };
 
 const agent = {
