@@ -49,7 +49,7 @@ export default class UserStore {
     }
   };
 
-  setDisplayName = (userName) => {
-    this.user.userName = userName;
+  setDisplayName = (displayName) => {
+    this.user.displayName = displayName;
   };
 }

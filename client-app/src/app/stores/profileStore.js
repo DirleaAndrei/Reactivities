@@ -92,7 +92,6 @@ export default class ProfileStore {
   };
 
   updateProfile = async (profile) => {
-    this.loadingProfile = true;
     try {
       let partialProfile = {
         DisplayName: profile.displayName,
@@ -104,10 +103,8 @@ export default class ProfileStore {
           this.profile.displayName = partialProfile.DisplayName;
           this.profile.bio = partialProfile.Bio;
         }
-        this.loading = false;
       });
     } catch (error) {
-      runInAction(() => (this.loadingProfile = false));
       console.log(error);
     }
   };
