@@ -90,4 +90,25 @@ export default class ProfileStore {
       console.log(error);
     }
   };
+
+  updateProfile = async (profile) => {
+    this.loadingProfile = true;
+    try {
+      let partialProfile = {
+        DisplayName: profile.displayName,
+        Bio: profile.bio,
+      };
+      await agent.Profiles.updateProfile(partialProfile);
+      runInAction(() => {
+        if (this.profile) {
+          this.profile.displayName = partialProfile.DisplayName;
+          this.profile.bio = partialProfile.Bio;
+        }
+        this.loading = false;
+      });
+    } catch (error) {
+      runInAction(() => (this.loadingProfile = false));
+      console.log(error);
+    }
+  };
 }

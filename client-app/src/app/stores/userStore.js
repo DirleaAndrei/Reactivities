@@ -48,4 +48,8 @@ export default class UserStore {
       console.log(error);
     }
   };
+
+  setDisplayName = (userName) => {
+    this.user.userName = userName;
+  };
 }
