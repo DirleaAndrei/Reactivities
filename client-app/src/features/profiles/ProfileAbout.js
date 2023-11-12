@@ -1,10 +1,14 @@
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import { Button, Grid, Header, Tab } from "semantic-ui-react";
+import { useStore } from "../../app/stores/store";
 import ProfileEdit from "./ProfileEdit";
 
 export default observer(function ProfileAbout({ profile }) {
   const [editMode, setEditMode] = useState(false);
+  const {
+    userStore: { user },
+  } = useStore();
   return (
     <Tab.Pane>
       <Grid>
@@ -14,12 +18,14 @@ export default observer(function ProfileAbout({ profile }) {
             icon="user"
             content={`About ${profile.displayName}`}
           />
-          <Button
-            floated="right"
-            basic
-            content={editMode ? "Cancel" : "Edit Profile"}
-            onClick={() => setEditMode(!editMode)}
-          />
+          {profile.username === user.username && (
+            <Button
+              floated="right"
+              basic
+              content={editMode ? "Cancel" : "Edit Profile"}
+              onClick={() => setEditMode(!editMode)}
+            />
+          )}
         </Grid.Column>
         <Grid.Column width={16}>
           {editMode ? (

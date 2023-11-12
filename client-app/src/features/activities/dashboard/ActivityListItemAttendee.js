@@ -5,13 +5,18 @@ import { Image, List, Popup, PopupContent } from "semantic-ui-react";
 import ProfileCard from "../../profiles/ProfileCard";
 
 export default observer(function ActivityListItemAttendee({ attendees }) {
+  const styles = {
+    borderColor: "orange",
+    borderWidth: 3,
+  };
+
   return (
     <List horizontal>
       {attendees.map((attendee) => (
         <Popup
           hoverable
           key={attendee.username}
-          trigger={
+        trigger={
             <List.Item
               key={attendee.username}
               as={Link}
@@ -21,6 +26,8 @@ export default observer(function ActivityListItemAttendee({ attendees }) {
                 size="mini"
                 circular
                 src={attendee.image || "/assets/user.png"}
+                bordered
+                style={attendee.following ? styles : null}
               />
             </List.Item>
           }

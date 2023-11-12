@@ -4,6 +4,9 @@ export class Profile {
   bio = null;
   image = "";
   photos = [];
+  followersCount = 0;
+  followingCount = 0;
+  following = false;
 
   constructor(user) {
     if (user) {
@@ -12,6 +15,9 @@ export class Profile {
       this.bio = null;
       this.image = user.image;
       this.photos = user.photos;
+      this.followersCount = user.followersCount;
+      this.followingCount = user.followingCount;
+      this.following = user.following;
     }
   }
 }

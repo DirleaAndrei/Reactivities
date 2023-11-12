@@ -1,9 +1,9 @@
 import { format } from "date-fns";
 import { makeAutoObservable, runInAction } from "mobx";
-import agent from "../api/agent";
-import { store } from "./store";
 import { Activity } from "../../features/models/activity";
 import { Profile } from "../../features/models/profile";
+import agent from "../api/agent";
+import { store } from "./store";
 
 export default class ActivityStore {
   activityRegistry = new Map();
@@ -196,5 +196,18 @@ export default class ActivityStore {
 
   clearSelectedActivity = () => {
     this.selectedActivity = undefined;
+  };
+
+  updateAttendeeFollowing = (username) => {
+    this.activityRegistry.forEach((activity) => {
+      activity.attendees.forEach((attendee) => {
+        if (attendee.username === username) {
+          attendee.following
+            ? attendee.followersCount--
+            : attendee.followersCount++;
+          attendee.following = !attendee.following;
+        }
+      });
+    });
   };
 }
