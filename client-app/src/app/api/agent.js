@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { router } from "../router/Route";
 import { store } from "../stores/store";
+import { PaginatedResults } from "../../features/models/pagination";
 
 const sleep = (delay) => {
   return new Promise((resolve) => {
@@ -20,6 +21,14 @@ axios.interceptors.request.use((config) => {
 axios.interceptors.response.use(
   async (response) => {
     await sleep(1000);
+    const pagination = response.headers["pagination"];
+    if (pagination) {
+      response.data = new PaginatedResults(
+        response.data,
+        JSON.parse(pagination)
+      );
+      return response;
+    }
     return response;
   },
   (error) => {
@@ -71,7 +80,7 @@ const requests = {
 };
 
 const Activities = {
-  list: () => requests.get("/activities"),
+  list: (params) => axios.get("/activities", { params }).then(responseBody),
   details: (id) => requests.get(`/activities/${id}`),
   create: (activity) => requests.post(`/activities`, activity),
   update: (activity) => requests.put(`/activities/${activity.id}`, activity),
