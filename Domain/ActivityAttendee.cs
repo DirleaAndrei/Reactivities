@@ -1,5 +1,3 @@
-using System.Runtime;
-
 namespace Domain
 {
     public class ActivityAttendee
