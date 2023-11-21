@@ -5,6 +5,7 @@ import ProfileAbout from "./ProfileAbout";
 import ProfileFollowings from "./ProfileFollowings";
 import ProfilePhotos from "./ProfilePhotos";
 import { useStore } from "../../app/stores/store";
+import ProfileEvents from "./ProfileEvents";
 
 export default observer(function ProfileContent({ profile }) {
   const { profileStore } = useStore();
@@ -14,7 +15,7 @@ export default observer(function ProfileContent({ profile }) {
       render: () => <ProfileAbout profile={profile} />,
     },
     { menuItem: "Photos", render: () => <ProfilePhotos profile={profile} /> },
-    { menuItem: "Events", render: () => <Tab.Pane>Events Content</Tab.Pane> },
+    { menuItem: "Events", render: () => <ProfileEvents profile={profile} /> },
     {
       menuItem: "Followers",
       render: () => (

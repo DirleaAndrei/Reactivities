@@ -8,8 +8,11 @@ export default class ProfileStore {
   uploading = false;
   loading = false;
   followings = [];
+  events = [];
   loadingFollowings = false;
+  loadingEvents = false;
   activeTab = 0;
+  eventsActiveTab = 0;
 
   constructor() {
     makeAutoObservable(this);
@@ -20,15 +23,31 @@ export default class ProfileStore {
         if (activeTab === 3 || activeTab === 4) {
           const predicate = activeTab === 3 ? "followers" : "following";
           this.loadFollowings(predicate);
+        } else if (activeTab === 2 && this.events.length === 0) {
+          this.loadEvents("future");
+          this.followings = [];
         } else {
           this.followings = [];
         }
+      }
+    );
+
+    reaction(
+      () => this.eventsActiveTab,
+      (eventsActiveTab) => {
+        if (eventsActiveTab === 0) this.loadEvents("future");
+        if (eventsActiveTab === 1) this.loadEvents("past");
+        if (eventsActiveTab === 2) this.loadEvents("hosting");
       }
     );
   }
 
   setActiveTab = (activeTab) => {
     this.activeTab = activeTab;
+  };
+
+  setEventsActiveTab = (eventsActiveTab) => {
+    this.eventsActiveTab = eventsActiveTab;
   };
 
   get isCurrentUser() {
@@ -184,6 +203,26 @@ export default class ProfileStore {
       console.log(error);
       runInAction(() => {
         this.loadingFollowings = false;
+      });
+    }
+  };
+
+  loadEvents = async (predicate) => {
+    this.loadingEvents = true;
+
+    try {
+      const events = await agent.Profiles.listEvents(
+        this.profile.username,
+        predicate
+      );
+      runInAction(() => {
+        this.events = events;
+        this.loadingEvents = false;
+      });
+    } catch (error) {
+      console.log(error);
+      runInAction(() => {
+        this.loadingEvents = false;
       });
     }
   };
