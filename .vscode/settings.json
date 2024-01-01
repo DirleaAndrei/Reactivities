@@ -2,8 +2,12 @@
   "dotnet.defaultSolution": "Reactivities.sln",
   "cSpell.words": [
     "Cloudinary",
+    "datepicker",
     "Formik",
     "hoverable",
-    "Mediat"
+    "Mediat",
+    "scroller",
+    "signalr",
+    "toastify"
   ]
 }
