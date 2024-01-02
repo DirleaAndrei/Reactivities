@@ -15,8 +15,8 @@ export const store = {
   commentStore: new CommentStore()
 };
 
-export const storeContext = createContext(store);
+export const StoreContext = createContext(store);
 
 export function useStore() {
-  return useContext(storeContext);
+  return useContext(StoreContext);
 }
