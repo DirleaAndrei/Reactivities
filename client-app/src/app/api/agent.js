@@ -1,8 +1,8 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import { PaginatedResults } from "../../features/models/pagination";
 import { router } from "../router/Route";
 import { store } from "../stores/store";
-import { PaginatedResults } from "../../features/models/pagination";
 
 const sleep = (delay) => {
   return new Promise((resolve) => {
@@ -10,7 +10,7 @@ const sleep = (delay) => {
   });
 };
 
-axios.defaults.baseURL = "http://localhost:5002/api";
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 axios.interceptors.request.use((config) => {
   const token = store.commonStore.token;
@@ -20,7 +20,7 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use(
   async (response) => {
-    await sleep(1000);
+    if (process.env.DEV) await sleep(1000);
     const pagination = response.headers["pagination"];
     if (pagination) {
       response.data = new PaginatedResults(
