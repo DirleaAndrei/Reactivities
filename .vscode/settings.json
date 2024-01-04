@@ -6,6 +6,7 @@
     "Formik",
     "hoverable",
     "Mediat",
+    "Npgsql",
     "scroller",
     "signalr",
     "toastify"

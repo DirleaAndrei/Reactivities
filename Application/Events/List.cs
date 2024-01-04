@@ -37,14 +37,14 @@ namespace Application.Events
                     case "past":
                         activities = await _context.ActivityAttendees
                             .Where(x => x.AppUser.UserName == request.Username &&
-                                        x.Activity.Date < DateTime.Now)
+                                        x.Activity.Date < DateTime.UtcNow)
                             .ProjectTo<UserActivityDto>(_mapper.ConfigurationProvider)
                             .ToListAsync();
                         break;
                     case "future":
                         activities = await _context.ActivityAttendees
                             .Where(x => x.AppUser.UserName == request.Username &&
-                                        x.Activity.Date > DateTime.Now)
+                                        x.Activity.Date > DateTime.UtcNow)
                             .ProjectTo<UserActivityDto>(_mapper.ConfigurationProvider)
                             .ToListAsync();
                         break;
