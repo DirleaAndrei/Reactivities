@@ -2,10 +2,12 @@
   "dotnet.defaultSolution": "Reactivities.sln",
   "cSpell.words": [
     "andreidocker",
+    "ASPNETCORE",
     "Buildx",
     "Cloudinary",
     "datepicker",
     "DOCKERHUB",
+    "flycast",
     "flyctl",
     "Formik",
     "hoverable",
