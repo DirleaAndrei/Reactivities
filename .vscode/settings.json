@@ -1,14 +1,19 @@
 {
   "dotnet.defaultSolution": "Reactivities.sln",
   "cSpell.words": [
+    "andreidocker",
+    "Buildx",
     "Cloudinary",
     "datepicker",
+    "DOCKERHUB",
+    "flyctl",
     "Formik",
     "hoverable",
     "Mediat",
     "Npgsql",
     "scroller",
     "signalr",
+    "superfly",
     "toastify"
   ]
 }

@@ -1,4 +1,4 @@
-name: ci
+name: reactivities-ci
 
 on:
   workflow_dispatch:
@@ -24,7 +24,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: andreidocker1997/app:latest
+          tags: andreidocker1997/reactivities:latest
   deploy:
     needs: docker
     name: Deploy app
