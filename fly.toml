@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for reactivities-andrei on 2024-01-24T15:03:49+02:00
+# fly.toml app configuration file generated for reactivities-andrei on 2024-01-24T19:16:40+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -11,8 +11,8 @@ primary_region = "otp"
 
 [env]
   ASPNETCORE_URLS = "http://+:8080"
-  Cloudinary_ApiKey = "619168883229756"
-  Cloudinary_CloudName = "dg478cfn9"
+  Cloudinary__ApiKey = "619168883229756"
+  Cloudinary__CloudName = "dg478cfn9"
 
 [http_service]
   internal_port = 8080
