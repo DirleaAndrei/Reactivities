@@ -29,9 +29,6 @@ export default observer(function ActivityDashboard() {
     <Grid>
       
       <Grid.Column width="10">
-        <h1>
-          Test AndreiD2
-        </h1>
         {activityStore.loadingInitial &&
         activityRegistry.size === 0 &&
         !loadingNext ? (

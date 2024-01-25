@@ -21,7 +21,6 @@ namespace API.Extensions
             })
             .AddEntityFrameworkStores<DataContext>();
 
-            Console.WriteLine(config["TokenKey"]);
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
