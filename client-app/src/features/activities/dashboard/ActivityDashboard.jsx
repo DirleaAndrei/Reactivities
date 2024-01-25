@@ -27,8 +27,8 @@ export default observer(function ActivityDashboard() {
 
   return (
     <Grid>
-      
       <Grid.Column width="10">
+        <h1>Test Automatic deploy. AndreiD</h1>
         {activityStore.loadingInitial &&
         activityRegistry.size === 0 &&
         !loadingNext ? (
