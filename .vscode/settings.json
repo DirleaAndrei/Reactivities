@@ -5,6 +5,7 @@
     "ASPNETCORE",
     "Buildx",
     "Cloudinary",
+    "creds",
     "datepicker",
     "DOCKERHUB",
     "flycast",
@@ -15,6 +16,7 @@
     "Mediat",
     "Npgsql",
     "scroller",
+    "Sendgrid",
     "signalr",
     "superfly",
     "toastify"

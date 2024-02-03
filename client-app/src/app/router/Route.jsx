@@ -7,8 +7,10 @@ import ServerError from "../../features/errors/ServerError";
 import TestErrors from "../../features/errors/TestError";
 import ProfilePage from "../../features/profiles/ProfilePage";
 import LoginForm from "../../features/users/LoginForm";
+import RegisterSuccess from "../../features/users/RegisterSuccess";
 import App from "../layout/App";
 import RequireAuth from "./RequireAuth";
+import ConfirmEmail from "../../features/users/ConfirmEmail";
 
 export const routes = [
   {
@@ -56,6 +58,14 @@ export const routes = [
       {
         path: "server-error",
         element: <ServerError />,
+      },
+      {
+        path: "account/registerSuccess",
+        element: <RegisterSuccess />,
+      },
+      {
+        path: "account/verifyEmail",
+        element: <ConfirmEmail />,
       },
       {
         path: "*",
