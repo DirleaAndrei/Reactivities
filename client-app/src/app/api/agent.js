@@ -47,9 +47,11 @@ axios.interceptors.response.use(
               modalStateErrors.push(data.errors[key]);
             }
           }
-          throw modalStateErrors.flat();
-        } else toast.error(data);
-        break;
+          throw new Error(modalStateErrors.flat().join("\n"));
+        } else {
+          toast.error(data);
+          throw new Error(data);
+        }
       case 401:
         if (
           status === 401 &&
@@ -59,8 +61,6 @@ axios.interceptors.response.use(
         ) {
           store.userStore.logout();
           toast.error("Session expired - please login again");
-        } else {
-          toast.error("unauthorized");
         }
         break;
       case 403:
@@ -105,6 +105,10 @@ const Account = {
   fbLogin: (accessToken) =>
     requests.post(`/account/fbLogin?accessToken=${accessToken}`, {}),
   refreshToken: () => requests.post("/account/refreshToken", {}),
+  verifyEmail: (token, email) =>
+    requests.post(`/account/verifyEmail?token=${token}&email=${email}`, {}),
+  resendEmailConfirm: (email) =>
+    requests.get(`/account/resendEmailConfirmationLink?email=${email}`),
 };
 
 const Profiles = {
