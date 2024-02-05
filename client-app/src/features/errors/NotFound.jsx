@@ -13,7 +13,7 @@ export default function NotFound() {
       <Segment.Inline>
         <Button as={Link} to="/activities">
           {" "}
-          Return to activies page
+          Return to activities page
         </Button>
       </Segment.Inline>
     </Segment>

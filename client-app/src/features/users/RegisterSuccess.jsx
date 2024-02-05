@@ -7,7 +7,6 @@ export default function RegisterSuccess() {
     const email = useQuery().get('email'); 
 
     function handleConfirmEmailResend() {
-        console.log("Yee")
         agent.Account.resendEmailConfirm((email)).then(()=>{
             toast.success('Verification email resent - please check your email');
         }).catch(error => console.error(error))
