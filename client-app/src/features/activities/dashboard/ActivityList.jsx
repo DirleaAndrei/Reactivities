@@ -9,6 +9,8 @@ export default observer(function ActivityList() {
   const { activityStore } = useStore();
   const { groupedActivities } = activityStore;
 
+  if(groupedActivities.length === 0) return <Header color="teal">There are no activities!</Header>
+
   return (
     <>
       {groupedActivities.map(([group, activities]) => {
