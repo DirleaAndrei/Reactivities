@@ -22,7 +22,8 @@ export default observer(function NavBar() {
         {isLoggedIn &&
           <>
             <Menu.Item as={NavLink} to="/activities" name="Activities" />
-            <Menu.Item as={NavLink} to="/errors" name="Errors" />
+            {/* Next Line will be used only for development testing purposes */}
+            {/* <Menu.Item as={NavLink} to="/errors" name="Errors" /> */}
             <Menu.Item>
               <Button
                 as={NavLink}

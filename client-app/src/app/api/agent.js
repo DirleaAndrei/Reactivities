@@ -67,10 +67,8 @@ axios.interceptors.response.use(
           store.userStore.logout();
           toast.error("Session expired - please login again");
           break;
-        } else {
-          toast.error("Unauthorized!");
-          break;
         }
+        break;
       case 403:
         toast.error("Forbidden!");
         break;
