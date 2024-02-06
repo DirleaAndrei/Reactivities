@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs
 {
-    public class RegisterDto
+    public class ResetPasswordDto
     {
         [Required]
         [EmailAddress]
@@ -12,8 +12,6 @@ namespace API.DTOs
         [MaxLength(20, ErrorMessage = "Maximum number of characters is 20!")]
         [RegularExpression("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,20}$", ErrorMessage = "Password must be complex!")]
         public string Password { get; set; }
-        [Required]
-        public string DisplayName { get; set; }
-        public string Username { get; set; }
+        public string Token { get; set; }
     }
 }

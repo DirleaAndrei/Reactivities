@@ -116,7 +116,6 @@ namespace API.Controllers
         public async Task<IActionResult> ResendEmailConfirmationLink(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-
             if (user == null) return Unauthorized();
 
             var origin = Request.Headers["origin"];
@@ -124,10 +123,57 @@ namespace API.Controllers
             token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
             var verifyUrl = $"{origin}/account/verifyEmail?token={token}&email={user.Email}";
-            var message = $"<p>Please click the bellow link to verify your email address:</p><p><a href='{verifyUrl}'>Click to verify email</a></p>";
+            var message = @$"<p>Please click the bellow link to verify your email address:</p>
+                             <p><a href='{verifyUrl}'>Click to verify email</a></p>";
             await _emailSender.SendEmailAsync(user.Email, "Please verify email", message);
 
             return Ok("Email verification link resent!");
+        }
+
+        [AllowAnonymous]
+        [HttpGet("forgotPassword")]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null) return Unauthorized();
+
+            var origin = Request.Headers["origin"];
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            // Set token expiration time
+            var tokenExpirationTime = DateTime.UtcNow.AddMinutes(30);
+            token = $"{token}|{tokenExpirationTime.Ticks}";
+            token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+
+            var resetPasswordUrl = $"{origin}/account/resetPassword?token={token}&email={email}";
+            var message = @$"<p>Hello {user.UserName},
+                             </p></br></br><p>Forgot your password?</p></br>
+                             <p>We received a request to reset the password for your account.</p>
+                             <p>To reset your password, click on the link bellow(the link will be available only 30 minutes):</p></br>
+                             <p><a href='{resetPasswordUrl}'>{resetPasswordUrl}</a></p></br></br>
+                             <p>If you didn`t asked for it, ignore the email!</p>";
+
+            await _emailSender.SendEmailAsync(user.Email, "Reset Password", message);
+
+            return Ok("Email sent successfully!");
+        }
+
+        [AllowAnonymous]
+        [HttpPost("resetPassword")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
+        {
+            var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
+            if (user == null) return Unauthorized();
+
+            var decodedTokenBytes = WebEncoders.Base64UrlDecode(resetPasswordDto.Token);
+            var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
+
+            var expirationTimeTicks = long.Parse(decodedToken.Split('|')[1]);
+            if (DateTime.UtcNow.Ticks > expirationTimeTicks) return BadRequest("This link is expired!");
+
+            var result = await _userManager.ResetPasswordAsync(user, decodedToken.Split('|')[0], resetPasswordDto.Password);
+            if (!result.Succeeded) return BadRequest("Could not reset the password!");
+
+            return Ok("Password successfully changed - you can now login");
         }
 
         [Authorize]
