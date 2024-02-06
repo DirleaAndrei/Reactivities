@@ -35,11 +35,14 @@ axios.interceptors.response.use(
     const { data, status, config, headers } = error.response;
     switch (status) {
       case 400:
+        //Bad request returns an object with id property
         if (
           config.method === "get" &&
+          data.errors &&
           Object.prototype.hasOwnProperty.call(data.errors, "id")
         )
           router.navigate("/not-found");
+        //Bad request returns an object with errors property
         if (data.errors) {
           const modalStateErrors = [];
           for (const key in data.errors) {
@@ -48,7 +51,9 @@ axios.interceptors.response.use(
             }
           }
           throw new Error(modalStateErrors.flat().join("\n"));
-        } else {
+        }
+        //Bad request returns a message
+        else {
           toast.error(data);
           throw new Error(data);
         }
@@ -61,10 +66,11 @@ axios.interceptors.response.use(
         ) {
           store.userStore.logout();
           toast.error("Session expired - please login again");
+          break;
         }
         break;
       case 403:
-        toast.error("forbidden");
+        toast.error("Forbidden!");
         break;
       case 404:
         router.navigate("/not-found");

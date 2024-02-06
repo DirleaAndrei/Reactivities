@@ -15,7 +15,7 @@ export default function TestErrors() {
   function handleBadRequest() {
     axios
       .get("/buggy/bad-request")
-      .catch((err) => console.log(err.response));
+      .catch((err) => console.log(err));
   }
 
   function handleServerError() {
@@ -24,9 +24,9 @@ export default function TestErrors() {
       .catch((err) => console.log(err.response));
   }
 
-  function handleUnauthorised() {
+  function handleUnauthorized() {
     axios
-      .get("/buggy/unauthorised")
+      .get("/buggy/unauthorized")
       .catch((err) => console.log(err.response));
   }
 
@@ -37,7 +37,13 @@ export default function TestErrors() {
   }
 
   function handleValidationError() {
-    axios.post("/activities", {}).catch((err) => setErrors(err));
+    axios.post("/activities", {}).catch((err) => 
+    {
+      //Validations errors
+      if(err.message) setErrors(err.message.split('\n'));
+      //Message error
+      else setErrors(err);
+    });
   }
 
   return (
@@ -65,8 +71,8 @@ export default function TestErrors() {
             primary
           />
           <Button
-            onClick={handleUnauthorised}
-            content="Unauthorised"
+            onClick={handleUnauthorized}
+            content="Unauthorized"
             basic
             primary
           />
