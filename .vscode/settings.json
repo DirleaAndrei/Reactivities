@@ -2,6 +2,7 @@
   "dotnet.defaultSolution": "Reactivities.sln",
   "cSpell.words": [
     "andreidocker",
+    "aspnet",
     "ASPNETCORE",
     "Buildx",
     "Cloudinary",
