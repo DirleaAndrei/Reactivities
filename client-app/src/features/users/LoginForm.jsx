@@ -1,12 +1,14 @@
 import { ErrorMessage, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
-import { Button, Header, Label } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import { Button, Container, Header, Label } from "semantic-ui-react";
 import MyTextInput from "../../app/common/form/MyTextInput";
 import { useStore } from "../../app/stores/store";
+import ForgotPasswordForm from "./ForgotPasswordForm";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export default observer(function LoginForm() {
-  const { userStore } = useStore();
+  const { userStore, modalStore } = useStore();
   return (
     <Formik
       initialValues={{ email: "", password: "", error: null }}
@@ -45,6 +47,12 @@ export default observer(function LoginForm() {
             type="submit"
             fluid
           />
+          <br></br>
+          <Container textAlign="center">
+            <Link onClick={() => modalStore.openModal(<ForgotPasswordForm />)}>
+              Forgot Password!
+            </Link>
+          </Container>
         </Form>
       )}
     </Formik>

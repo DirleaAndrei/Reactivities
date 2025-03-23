@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { router } from "../router/Route";
 import { store } from "./store";
+import { toast } from "react-toastify";
 
 export default class UserStore {
   user = null;
@@ -95,5 +96,11 @@ export default class UserStore {
 
   #stopRefreshTokenTimer() {
     clearTimeout(this.refreshTokenTimeout);
+  }
+
+  forgotPassword = async (email) => {
+    const response = await agent.Account.forgotPassword(email);
+    toast.success(response);
+    store.modalStore.closeModal();
   }
 }

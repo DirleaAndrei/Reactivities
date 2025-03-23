@@ -106,7 +106,7 @@ namespace API.Controllers
             var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
             var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
 
-            if (!result.Succeeded) return BadRequest("Could not verify email address!");
+            if (!result.Succeeded) return Unauthorized("Could not verify email address!");
 
             return Ok("Email confirmed - you can now login");
         }
@@ -135,7 +135,7 @@ namespace API.Controllers
         public async Task<IActionResult> ForgotPassword(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null) return Unauthorized();
+            if (user == null) return Unauthorized("Wrong email address!");
 
             var origin = Request.Headers["origin"];
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -154,7 +154,7 @@ namespace API.Controllers
 
             await _emailSender.SendEmailAsync(user.Email, "Reset Password", message);
 
-            return Ok("Email sent successfully!");
+            return Ok("Email sent successfully!\n Please check your inbox or Spam folder!");
         }
 
         [AllowAnonymous]
@@ -167,13 +167,14 @@ namespace API.Controllers
             var decodedTokenBytes = WebEncoders.Base64UrlDecode(resetPasswordDto.Token);
             var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
 
+            return BadRequest("This link is expired!");
             var expirationTimeTicks = long.Parse(decodedToken.Split('|')[1]);
             if (DateTime.UtcNow.Ticks > expirationTimeTicks) return BadRequest("This link is expired!");
 
             var result = await _userManager.ResetPasswordAsync(user, decodedToken.Split('|')[0], resetPasswordDto.Password);
-            if (!result.Succeeded) return BadRequest("Could not reset the password!");
+            if (!result.Succeeded) return Unauthorized("Could not reset the password!");
 
-            return Ok("Password successfully changed - you can now login");
+            return Ok("Password successfully changed - you can login");
         }
 
         [Authorize]

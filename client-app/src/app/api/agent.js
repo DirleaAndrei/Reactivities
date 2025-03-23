@@ -36,7 +36,7 @@ axios.interceptors.response.use(
     switch (status) {
       case 400:
         if (
-          config.method === "get" &&
+          config.method === "get" && data.errors &&
           Object.prototype.hasOwnProperty.call(data.errors, "id")
         )
           router.navigate("/not-found");
@@ -109,6 +109,10 @@ const Account = {
     requests.post(`/account/verifyEmail?token=${token}&email=${email}`, {}),
   resendEmailConfirm: (email) =>
     requests.get(`/account/resendEmailConfirmationLink?email=${email}`),
+  forgotPassword: (email) =>
+    requests.get(`/account/forgotPassword?email=${email}`),
+  resetPassword: (resetPassword) =>
+    requests.post(`/account/resetPassword`, resetPassword),
 };
 
 const Profiles = {
